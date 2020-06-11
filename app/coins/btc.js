@@ -367,7 +367,7 @@ module.exports = {
 			chain: "main",
 			txid: "a1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d",
 			summary: "The 'Bitcoin Pizza' transaction.",
-			alertBodyHtml: "This is the famous 'Bitcoin Pizza' transaction.",
+			alertBodyHtml: "This is the famous 'Bitcoin Pizza' transaction, one of the earliest 'real-world' transactions, in which 10,000 BTC was paid for 2 large pizzas worth ~41 USD (at an effective exchange rate of ~$0.04/BTC).",
 			referenceUrl: "https://bitcointalk.org/index.php?topic=137.0"
 		},
 		{
@@ -458,6 +458,16 @@ module.exports = {
 			txid: "eeea72f5c9fe07178013eac84c3705443321d5453befd7591f52d22ac39b3963",
 			summary: "500+ million USD transferred for < 1 USD fee (2020 prices)."
 		},
+		{
+			type: "tx",
+			date: "2020-05-20",
+			chain: "main",
+			txid: "cb1440c787d8a46977886405a34da89939e1b04907f567bf182ef27ce53a8d71",
+			summary: "Very old coins (mined ~1 month after genesis) move unexpectedly, causing uproar",
+			alertBodyHtml: "On May 5, 2020, 50 BTC mined on Feb 9, 2009 (~1 month after Satoshi mined the Genesis block), moved unexpectedly after being dormant for 11+ years. Some observers wondered if they were coins from Satoshi's stash (they likely <a href='https://twitter.com/zackvoell/status/1263120133054255104'>were not</a>) and got excited.",
+			referenceUrl: "https://twitter.com/WhalePanda/status/1263120678380867586"
+		},
+
 
 
 		// testnet

@@ -922,20 +922,28 @@ router.get("/address/:address", function(req, res, next) {
 	
 	res.locals.result = {};
 
+	var parseAddressErrors = [];
+
 	try {
 		res.locals.addressObj = bitcoinjs.address.fromBase58Check(address);
 
 	} catch (err) {
 		if (!err.toString().startsWith("Error: Non-base58 character")) {
-			res.locals.pageErrors.push(utils.logError("u3gr02gwef", err));
+			parseAddressErrors.push(utils.logError("u3gr02gwef", err));
 		}
+	}
 
-		try {
-			res.locals.addressObj = bitcoinjs.address.fromBech32(address);
+	try {
+		res.locals.addressObj = bitcoinjs.address.fromBech32(address);
 
-		} catch (err2) {
-			res.locals.pageErrors.push(utils.logError("u02qg02yqge", err));
-		}
+	} catch (err2) {
+		parseAddressErrors.push(utils.logError("u02qg02yqge", err2));
+	}
+
+	if (res.locals.addressObj == null) {
+		parseAddressErrors.forEach(function(x) {
+			res.locals.pageErrors.push(x);
+		});
 	}
 
 	if (global.miningPoolsConfigs) {
@@ -1290,7 +1298,7 @@ router.get("/rpc-browser", function(req, res, next) {
 
 								} else if (argProperties[j] === "string" || argProperties[j] === "numeric or string" || argProperties[j] === "string or numeric") {
 									if (req.query.args[i]) {
-										argValues.push(req.query.args[i]);
+										argValues.push(req.query.args[i].replace(/[\r]/g, ''));
 									}
 
 									break;
@@ -1326,10 +1334,10 @@ router.get("/rpc-browser", function(req, res, next) {
 							return next(err);
 						}
 
-						debugLog("Executing RPC '" + req.query.method + "' with params: [" + argValues + "]");
+						debugLog("Executing RPC '" + req.query.method + "' with params: " + JSON.stringify(argValues));
 
 						global.rpcClientNoTimeout.command([{method:req.query.method, parameters:argValues}], function(err3, result3, resHeaders3) {
-							debugLog("RPC Response: err=" + err3 + ", result=" + result3 + ", headers=" + resHeaders3);
+							debugLog("RPC Response: err=" + err3 + ", headers=" + resHeaders3 + ", result=" + JSON.stringify(result3));
 
 							if (err3) {
 								res.locals.pageErrors.push(utils.logError("23roewuhfdghe", err3, {method:req.query.method, params:argValues, result:result3, headers:resHeaders3}));
